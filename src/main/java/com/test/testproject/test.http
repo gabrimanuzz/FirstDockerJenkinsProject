@@ -1,0 +1,15 @@
+### Tutti i draghi
+GET http://localhost:8081/draghi
+
+### Singolo drago
+GET http://localhost:8081/draghi/Smaug
+
+### Aggiungi drago
+POST http://localhost:8081/draghi
+Content-Type: application/json
+
+{
+  "name": "Falkor",
+  "color": "bianco",
+  "age": 300
+}
