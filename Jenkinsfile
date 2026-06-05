@@ -22,9 +22,8 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh 'docker stop drago-api-container || true'
-                sh 'docker rm drago-api-container || true'
-                sh 'docker run -d -p 8082:8081 --name drago-api-container drago-api'
+                sh 'docker-compose down || true'
+                sh 'docker-compose up -d'
             }
         }
     }
