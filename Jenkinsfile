@@ -14,6 +14,17 @@ pipeline {
             }
         }
 
+        stage('Test') {
+            steps {
+                sh './mvnw test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+
         stage('Docker Build') {
             steps {
                 sh 'docker build -t drago-api .'
@@ -22,10 +33,18 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh 'docker stop drago-api-container || true'
-                sh 'docker rm drago-api-container || true'
-                sh 'docker run -d -p 8082:8081 --name drago-api-container drago-api'
+                sh 'docker-compose down || true'
+                sh 'docker-compose up -d --build'
             }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Pipeline completata con successo!'
+        }
+        failure {
+            echo '❌ Pipeline fallita — controlla i test!'
         }
     }
 }
